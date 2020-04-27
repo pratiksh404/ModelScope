@@ -13,5 +13,15 @@
     "require": {},
     "require-dev": {
         "orchestra/testbench": "5.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "drh2so4\\ModelScope": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "drh2so4\\ModelScope\\Tests\\" : "test/"
+        }
     }
 }
