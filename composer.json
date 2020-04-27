@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "drh2so4\\ModelScope": "src/"
+            "drh2so4\\ModelScope\\": "src/"
         }
     },
     "autoload-dev": {
