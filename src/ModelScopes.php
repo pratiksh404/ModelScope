@@ -1,5 +1,5 @@
 <?php
-namespace App\Traits;
+namespace drh2so4\ModelScope;
 
 trait ModelScopes
 {
