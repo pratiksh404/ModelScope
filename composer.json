@@ -1,0 +1,17 @@
+{
+    "name": "drh2so4/modelscope",
+    "description": "This is the simple package that allows you to utilize different laravel model scopes dealing with laravel query builders.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pratik Shrestha",
+            "email": "pratikdai404@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "5.x-dev"
+    }
+}
