@@ -60,14 +60,20 @@ This package fulfills that.
 | ------ | ------ |
 | Model::getLatestAll() | Retrive data orderd by updated_at timestamp in ascending order |
 | Model::getLatest($limit) | This scope expects parameter $limit which return $limit number of data |
+| Model::todayData() | Retrives today's data |
 | Model::lastWeekData() | Retrives last week data |
 | Model::lastWeekDataLimit($limit) | Retrives last week $limit number of data |
 | Model::lastMonthData() | Retrives last month data |
 | Model::lastMonthDataLimit($limit) | Retrives last month $limit number of data |
-| Model::todayData() | Retrives today's data |
+| Model::lastYearData() | Retrives last month data |
+| Model::lastYearDataLimit($limit) | Retrives last year $limit number of data |
+| Model::tillNowFrom($date) | Retrives data from $date till now |
+| Model::between($from,$to) | Retrives data $from date to $to date |
+| Model::notBetween($from,$to) | Doesn't retrives data $from date to $to date |
 | Model::asc() | Ascending Ordered Data |
 | Model::desc() | Descending Ordered Data |
-| Model::filter(array) | Return multiple where condition data where key is field and value is condition matching value |
+| Model::whereFilter(array) | Return multiple where condition data where key is field and value is condition matching value |
+| Model::orWhereFilter(array) | Return multiple or where condition data where key is field and value is condition matching value |
 
 
 
