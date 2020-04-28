@@ -6,68 +6,68 @@ use Carbon\Carbon;
 trait ModelScopes
 {
     public function scopeGetLatestAll($query){
-        return $query->orderBy('updated_at','ASC')->get();
+        return $query->orderBy('updated_at','ASC');
     }
 
-    public function scopeGetLatest($query,$limit){
-        return $query->orderBy('updated_at','ASC')->take($limit)->get();
+    public function scopeGetLatestLimit($query,$limit = 5){
+        return $query->orderBy('updated_at','ASC')->take($limit);
     }
 
     public function scopeLastWeekData($query){
         $date = Carbon::today()->subDays(7);
-    $query->where('updated_at','>=',$date)->get();
+    $query->where('updated_at','>=',$date);
     }
 
     public function scopeLastWeekDataLimit($query,$limit = 5){
         $date = Carbon::today()->subDays(7);
-    $query->where('updated_at','>=',$date)->take($limit)->get();
+    $query->where('updated_at','>=',$date)->take($limit);
     }
 
     public function scopeLastMonthData($query){
         $date = Carbon::today()->subMonth();
-        $query->where('updated_at','>=',$date)->get();
+        $query->where('updated_at','>=',$date);
     }
 
     public function scopeLastMonthDataLimit($query,$limit = 5){
         $date = Carbon::today()->subMonth();
-        $query->where('updated_at','>=',$date)->take($limit)->get();
+        $query->where('updated_at','>=',$date)->take($limit);
     }
 
     public function scopeTodayData($query){
         $date = Carbon::today();
-        $query->where('updated_at',$date)->get();
+        $query->where('updated_at',$date);
     }
 
     public function scopeLastYearData($query){
         $date = Carbon::today()->subYear();
-        $query->where('updated_at',$date)->get();
+        $query->where('updated_at',$date);
     }
 
     public function scopeLastYearDataLimit($query,$limit = 5){
         $date = Carbon::today()->subYear();
-        return $query->where('updated_at','>=',$date)->take($limit)->get();
+        return $query->where('updated_at','>=',$date)->take($limit);
     }
 
     public function scopeAsc($query){
-        return $query->orderBy('updated_at','ASC')->get();
+        return $query->orderBy('updated_at','ASC');
     }
 
     public function scopeDesc($query){
-        return $query->orderBy('updated_at','DESC')->get();
+        return $query->orderBy('updated_at','DESC');
     }
 
     public function scopeTillNowFrom($query,$date){
         $from = Carbon::parse($date);
-        return $query->where()->get('updated_at','>=',$from)->get();
+        return $query->where()->get('updated_at','>=',$from);
     }
 
-    public function scopeBetween($query,$from_date,$to_date){
+    public function scopeDataBetween($query,$from_date,$to_date){
         $from = Carbon::parse($from_date);
         $to = Carbon::parse($to_date);
         return $query->whereBetween('updated_at',[$from,$to]);
     }
 
-    public function scopeNotBetween($query,$from_date,$to_date){
+    public function scopeDataNotBetween($query,$from_date,$to_date){
         $from = Carbon::parse($from_date);
         $to = Carbon::parse($to_date);
         return $query->whereNotBetween('updated_at',[$from,$to]);
