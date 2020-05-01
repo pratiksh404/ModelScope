@@ -7,9 +7,9 @@ This packages provides helpful query builder scopes.
 This package provide global scopes for every model by making making usage of trait where scopes is defined.
 
   - Latest Data Retrive
-  - Last Week Data Retrive
-  - Last Year Data Retrive
-  - Last Month Data Retrive
+  - Week Data Retrive
+  - Year Data Retrive
+  - Month Data Retrive
   - Order Ascending
   - Order Descending
   - Filtering
@@ -61,12 +61,12 @@ This package fulfills that.
 | Model::getLatestAll() | Retrive data orderd by updated_at timestamp in ascending order |
 | Model::getLatestLimit($limit) | This scope expects parameter $limit which return $limit number of data |
 | Model::todayData() | Retrives today's data |
-| Model::lastWeekData() | Retrives last week data |
-| Model::lastWeekDataLimit($limit) | Retrives last week $limit number of data |
-| Model::lastMonthData() | Retrives last month data |
-| Model::lastMonthDataLimit($limit) | Retrives last month $limit number of data |
-| Model::lastYearData() | Retrives last month data |
-| Model::lastYearDataLimit($limit) | Retrives last year $limit number of data |
+| Model::weekData() | Retrives week data |
+| Model::weekDataLimit($limit) | Retrives week $limit number of data |
+| Model::monthData() | Retrives month data |
+| Model::MonthDataLimit($limit) | Retrives month $limit number of data |
+| Model::yearData() | Retrives month data |
+| Model::yearDataLimit($limit) | Retrives year $limit number of data |
 | Model::tillNowFrom($date) | Retrives data from $date till now |
 | Model::dataBetween($from,$to) | Retrives data $from date to $to date |
 | Model::dataNotBetween($from,$to) | Doesn't retrives data $from date to $to date |
@@ -110,7 +110,7 @@ Retives latest $limit number of data if no parameter given retrives 5(default pa
 ```sh
       public function scopeTodayData($query){
         $date = Carbon::today();
-        $query->where('updated_at',$date);
+        $query->whereDate('updated_at',$date);
     }
 
 ```
@@ -122,111 +122,111 @@ $data = User::todayData()->get();
 ```
 Retives data created today.
 
-## scopeLastWeekData()
+## scopeWeekData()
 ```sh
-public function scopeLastWeekData($query){
+public function scopeWeekData($query){
         $date = Carbon::today()->subDays(7);
-    $query->where('updated_at','>=',$date);
+    $query->whereDate('updated_at','>=',$date);
     }
 
 ```
 ### Usage
 ```sh
 
-$data = User::lastWeekData()->get();
+$data = User::weekData()->get();
 
 ```
-Retives last week created data.
+Retives week created data.
 
-## scopeLastWeekDataLimit($limit)
+## scopeWeekDataLimit($limit)
 ```sh
 
-    public function scopeLastWeekDataLimit($query,$limit = 5){
+    public function scopeWeekDataLimit($query,$limit = 5){
         $date = Carbon::today()->subDays(7);
-    $query->where('updated_at','>=',$date)->take($limit);
+    $query->whereDate('updated_at','>=',$date)->take($limit);
     }
 
 ```
 ### Usage
 ```sh
 
-$data = User::lastWeekDataLimit(8)->get();
+$data = User::weekDataLimit(8)->get();
 
 ```
-Retives last week $limit number of data if parameter is left empty retives 5(default parameter value) data
+Retives week $limit number of data if parameter is left empty retives 5(default parameter value) data
 
-## scopeLastMonthData()
+## scopeMonthData()
 ```sh
-    public function scopeLastMonthData($query){
+    public function scopeMonthData($query){
         $date = Carbon::today()->subMonth();
-        $query->where('updated_at','>=',$date);
+        $query->whereDate('updated_at','>=',$date);
     }
 
 ```
 ### Usage
 ```sh
 
-$data = User::lastMonthData()->get();
+$data = User::monthData()->get();
 
 ```
-Retives last month created data.
+Retives month created data.
 
-## scopeLastMonthDataLimit($limit)
+## scopeMonthDataLimit($limit)
 ```sh
 
-    public function scopeLastMonthDataLimit($query,$limit = 5){
+    public function scopeMonthDataLimit($query,$limit = 5){
         $date = Carbon::today()->subMonth();
-        $query->where('updated_at','>=',$date)->take($limit);
+        $query->whereDate('updated_at','>=',$date)->take($limit);
     }
 
 ```
 ### Usage
 ```sh
 
-$data = User::lastMothDataLimit(8)->get();
+$data = User::mothDataLimit(8)->get();
 
 ```
-Retives last month $limit number of data if parameter is left empty retives 5(default parameter value) data
+Retives  month $limit number of data if parameter is left empty retives 5(default parameter value) data
 
-## scopeLastYearData()
+## scopeYearData()
 ```sh
-    public function scopeLastYearData($query){
+    public function scopeYearData($query){
         $date = Carbon::today()->subYear();
-        $query->where('updated_at',$date);
+        $query->whereDate('updated_at',$date);
     }
 
 ```
 ### Usage
 ```sh
 
-$data = User::lastYearData()->get();
+$data = User::yearData()->get();
 
 ```
-Retives last month created data.
+Retives  month created data.
 
-## scopeLastYearDataLimit($limit)
+## scopeYearDataLimit($limit)
 ```sh
 
-    public function scopeLastYearDataLimit($query,$limit = 5){
+    public function scopeYearDataLimit($query,$limit = 5){
         $date = Carbon::today()->subYear();
-        return $query->where('updated_at','>=',$date)->take($limit);
+        return $query->whereDate('updated_at','>=',$date)->take($limit);
     }
 
 ```
 ### Usage
 ```sh
 
-$data = User::lastYearDataLimit(8)->get();
+$data = User::yearDataLimit(8)->get();
 
 ```
-Retives last year $limit number of data if parameter is left empty retives 5(default parameter value) data
+Retives  year $limit number of data if parameter is left empty retives 5(default parameter value) data
 
 ## scopeTodayData()
 ```sh
 
     public function scopeTodayData($query){
         $date = Carbon::today();
-        $query->where('updated_at',$date);
+        $query->whereDate('updated_at',$date);
     }
 
 ```
@@ -243,7 +243,7 @@ Retives data created today.
 
  public function scopeTillNowFrom($query,$date){
         $from = Carbon::parse($date);
-        return $query->where()->get('updated_at','>=',$from);
+        return $query->whereDate('updated_at','>=',$from));
     }
 
 ```
