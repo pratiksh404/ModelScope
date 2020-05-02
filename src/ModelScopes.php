@@ -2,8 +2,9 @@
 namespace drh2so4\ModelScope;
 
 use Carbon\Carbon;
-use drh2so4\ModelScope\Exceptions\ModelScopeException;
+
 use Illuminate\Support\Str;
+use drh2so4\ModelScope\Exceptions\ModelScopeException;
 
 trait ModelScopes
 {
