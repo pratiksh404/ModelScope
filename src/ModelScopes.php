@@ -2,6 +2,8 @@
 namespace drh2so4\ModelScope;
 
 use Carbon\Carbon;
+use drh2so4\ModelScope\Exceptions\ModelScopeException;
+use Illuminate\Support\Str;
 
 trait ModelScopes
 {
@@ -9,7 +11,8 @@ trait ModelScopes
         return $query->orderBy('updated_at','ASC');
     }
 
-    public function scopeGetLatestLimit($query,$limit = 5){
+    public function scopeGetLatestLimit($query,int $limit = 5){
+  
         return $query->orderBy('updated_at','ASC')->take($limit);
     }
 
@@ -18,7 +21,7 @@ trait ModelScopes
     $query->whereDate('updated_at','>=',$date);
     }
 
-    public function scopeWeekDataLimit($query,$limit = 5){
+    public function scopeWeekDataLimit($query,int $limit = 5){
         $date = Carbon::today()->subDays(7);
     $query->whereDate('updated_at','>=',$date)->take($limit);
     }
@@ -28,7 +31,7 @@ trait ModelScopes
         $query->whereDate('updated_at','>=',$date);
     }
 
-    public function scopeMonthDataLimit($query,$limit = 5){
+    public function scopeMonthDataLimit($query, int $limit = 5){
         $date = Carbon::today()->subMonth();
         $query->whereDate('updated_at','>=',$date)->take($limit);
     }
@@ -43,7 +46,7 @@ trait ModelScopes
         $query->whereDate('updated_at',$date);
     }
 
-    public function scopeYearDataLimit($query,$limit = 5){
+    public function scopeYearDataLimit($query, int $limit = 5){
         $date = Carbon::today()->subYear();
         return $query->whereDate('updated_at','>=',$date)->take($limit);
     }
@@ -57,19 +60,22 @@ trait ModelScopes
     }
 
     public function scopeTillNowFrom($query,$date){
-        $from = Carbon::parse($date);
+        $this->date_validate($date);
+        $from = Carbon::createFromFormat('l jS \\of F Y',trim($date));
         return $query->whereDate('updated_at','>=',$from);
     }
 
     public function scopeDataBetween($query,$from_date,$to_date){
-        $from = Carbon::parse($from_date);
-        $to = Carbon::parse($to_date);
+        $this->dates_validate($from_date,$to_date);
+        $from = Carbon::createFromFormat('l jS \\of F Y',trim($from_date));
+        $to = Carbon::createFromFormat('l jS \\of F Y',trim($to_date));
         return $query->whereBetween('updated_at',[$from,$to]);
     }
 
     public function scopeDataNotBetween($query,$from_date,$to_date){
-        $from = Carbon::parse($from_date);
-        $to = Carbon::parse($to_date);
+        $this->dates_validate($from_date,$to_date);
+        $from = Carbon::createFromFormat('l jS \\of F Y',trim($from_date));
+        $to = Carbon::createFromFormat('l jS \\of F Y',trim($to_date));
         return $query->whereNotBetween('updated_at',[$from,$to]);
     }
 
@@ -111,5 +117,24 @@ trait ModelScopes
             }
         }
     }
+
+        /* ---------------------Exception-------------------- */
+
+        public function date_validate($date){
+            if(!Carbon::hasFormat(trim($date),'l jS \\of F Y')){
+                throw new ModelScopeException("$date is not in format should be in format('l jS \\of F Y') for eg Thursday 25th of December 1975");
+            }
+        }
+    
+        public function dates_validate($from_date,$to_date){
+            if(!Carbon::hasFormat(trim($from_date),'l jS \\of F Y')){
+                throw new ModelScopeException("$from_date is not in format should be in format('l jS \\of F Y') for eg Thursday 25th of December 1975");
+            }
+            if(!Carbon::hasFormat(trim($to_date),'l jS \\of F Y')){
+                throw new ModelScopeException("$to_date is not in format should be in format('l jS \\of F Y') for eg Thursday 25th of December 1975");
+            }
+        }
+    
+        /* ------------------------------------------------------- */
 
 }

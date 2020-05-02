@@ -10,9 +10,12 @@ This package provide global scopes for every model by making making usage of tra
   - Week Data Retrive
   - Year Data Retrive
   - Month Data Retrive
+  - Between Date Data Retrive
+  - Not Between Date Data Retrive
   - Order Ascending
   - Order Descending
-  - Filtering
+  - Multiple Where Filtering
+  - Multiple orWhere Filtering
 
 
 ### Installation
@@ -241,46 +244,51 @@ Retives data created today.
 ## scopeTillNowFrom($date)
 ```sh
 
- public function scopeTillNowFrom($query,$date){
-        $from = Carbon::parse($date);
-        return $query->whereDate('updated_at','>=',$from));
+    public function scopeTillNowFrom($query,$date){
+        $this->date_validate($date);
+        $from = Carbon::createFromFormat('l jS \\of F Y',trim($date));
+        return $query->whereDate('updated_at','>=',$from);
     }
 
 ```
 ### Usage
 ```sh
 
-$data = User::tillNowFrom('2020-4-28')->get();
+$data = User::tillNowFrom('Thursday 25th of December 1975')->get();
 
 ```
-Expects parameter as date in format yyyy-mm-dd.
+Expects parameter as date in format 'l jS \\of F Y'.
 Retrives all data created from $date till now.
 
 ## scopeDataBetween($from,$to)
 ```sh
 
     public function scopeDataBetween($query,$from_date,$to_date){
-        $from = Carbon::parse($from_date);
-        $to = Carbon::parse($to_date);
+        $this->dates_validate($from_date,$to_date);
+        $from = Carbon::createFromFormat('l jS \\of F Y',trim($from_date));
+        $to = Carbon::createFromFormat('l jS \\of F Y',trim($to_date));
         return $query->whereBetween('updated_at',[$from,$to]);
     }
+
 
 ```
 ### Usage
 ```sh
 
-$data = User::dataBetween('2020-2-28','2020-4-5')->get();
+$data = User::dataBetween('Thursday 25th of December 1975',''Saturday 27th of December 1975')->get();
 
 ```
-Expects parameter as date $from and $to in format yyyy-mm-dd.
+Expects parameter as date $from and $to in format 'l jS \\of F Y'.
 Retrives all data created  $from and $to.
 
 ## scopeDataNotBetween($from,$to)
 ```sh
 
+
     public function scopeDataNotBetween($query,$from_date,$to_date){
-        $from = Carbon::parse($from_date);
-        $to = Carbon::parse($to_date);
+        $this->dates_validate($from_date,$to_date);
+        $from = Carbon::createFromFormat('l jS \\of F Y',trim($from_date));
+        $to = Carbon::createFromFormat('l jS \\of F Y',trim($to_date));
         return $query->whereNotBetween('updated_at',[$from,$to]);
     }
 
@@ -288,10 +296,10 @@ Retrives all data created  $from and $to.
 ### Usage
 ```sh
 
-$data = User::dataNotBetween('2020-2-28','2020-4-5')->get();
+$data = User::dataNotBetween('Thursday 25th of December 1975',''Saturday 27th of December 1975')->get();
 
 ```
-Expects parameter as date $from and $to in format yyyy-mm-dd.
+Expects parameter as date $from and $to in format 'l jS \\of F Y'.
 Doesn't retrives data created  $from and $to.
 
 ## scopeWhereFilter($array)
@@ -380,7 +388,7 @@ Retives data with id = 2 or name = cat
 
 ### Todos
 
- Exception Creation.
+ Exceptions.
  More Scopes.
  Some Testing
 
